@@ -127,3 +127,34 @@ class BinarySearchTree:
     def __init__(self):
         self.root = None
 '''
+
+
+'''
+병합정렬
+
+from typing import Sequence, MultableSequence
+
+def merge_sorted_list(a: Sequence, b: Sequence, c: MultableSequence) -> None:
+
+    pa, pb, pc = 0, 0, 0
+    na, nb, nc = len(a), len(b), len(c)
+
+    while pa< na and pb<nb:
+        if a[pa] <= b[pb]:
+            c[pc] = a[pa]
+            pa += 1
+        else:
+            c[pc] = b[pb]
+            pb += 1
+        pc += 1
+    while pa < na:
+        c[pc] = a[pa]
+        pa += 1
+        pc += 1
+    while pb < nb:
+        c[pc] = b[pb]
+        pb += 1
+        pc += 1
+    
+merge_sorted_list(a, b, c)
+                
