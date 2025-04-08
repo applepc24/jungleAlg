@@ -10,8 +10,7 @@ for _ in range(M):
     graph[u].append(v)
     graph[v].append(u)
 
-# for key in graph:
-#     graph[key].sort()
+
 
 def bfs(graph, start,visited):
     queue = deque([start])
