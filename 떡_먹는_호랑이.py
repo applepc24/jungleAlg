@@ -10,6 +10,7 @@ for i in range(3, d+1):
 A = fibo[d - 2]
 B = fibo[d -1]
 
+
 for x in range(1, k+1):
     if(k - A * x) % B == 0:
         y = (k - A * x) // B
