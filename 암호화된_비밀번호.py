@@ -1,11 +1,14 @@
 from collections import Counter
 
 T = int(input())
+
 for _ in range(T):
     S = input().strip()
-    P = input().sprip()
-    
-    len_S, len_P = len(S), len(P)
+    P = input().strip()
+
+    len_S = len(S)
+    len_P = len(P)
+
     target = Counter(P)
     found = False
 
@@ -15,4 +18,7 @@ for _ in range(T):
             found = True
             break
     
-    print("YES" if found else "NO")
+    if found:
+        print("YES")
+    else:
+        print("NO")
