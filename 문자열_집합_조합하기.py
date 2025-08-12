@@ -14,7 +14,7 @@ def make_k_combos(s, k):
     n = len(s)
 
     for idxs in combinations(range(n), k):
-        ㅜㄴ
+        word = ''.join(s[i] for i in idxs)
         result.add(word)
     return result
 
