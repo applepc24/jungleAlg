@@ -1,18 +1,18 @@
+index = int(input())
 
-
-def find_char_at_index(index):
+def Letters(index):
     length = 1
-    total_chars = 0
+    total_char = 0
 
     while True:
         count = 26 ** length
-        chars_in_this_block = count * length
-        if total_chars + chars_in_this_block > index:
+        char_in_this_block = count * length
+        if total_char + char_in_this_block > index:
             break
-        total_chars += chars_in_this_block
+        total_char += char_in_this_block
         length += 1
-    
-    local_index = index -  total_chars
+
+    local_index = index - total_char
     string_index = local_index // length
     char_pos = local_index % length
 
@@ -24,5 +24,4 @@ def find_char_at_index(index):
 
     return s[char_pos]
 
-index = int(input())
-print(find_char_at_index(index))
+print(Letters(index))
