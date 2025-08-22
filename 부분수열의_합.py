@@ -1,14 +1,30 @@
-from itertools import combinations
+def solve():
+    import sys
+    input = sys.stdin.readline
 
-n, s = map(int, input().split())
-arr = list(map(int, input().split()))
-count = 0
+    N,S = map(int, input().split())
+    arr = list(map(int, input().split()))
 
-for i in range(1, n+1):
-    for subset in combinations(arr, i):
-        if sum(subset) == s:
-            count += 1
+    count = 0
 
-print(cnt)
+    def dfs(idx, total):
+        nonlocal count
+        if idx == N:
+            if total == S:
+                count += 1
+            return
+        
+
+        dfs(idx + 1, total +arr[idx])
+        dfs(idx +1, total)
+    
+    dfs(0,0)
+
+    if S == 0:
+        count -= 1
+    
+    print(count)
+
+solve()
 
 
