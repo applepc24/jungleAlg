@@ -1,34 +1,31 @@
 import sys
-from collections import defaultdict, deque
 input = sys.stdin.readline
-N , M = map(int, input().split())
+from collections import deque
+n,m = map(int, input().split())
 
-graph = defaultdict(list)
+graph = [[] for _ in range(n+1)]
+visited = [False] * (n+1)
 
-for _ in range(M):
-    u, v = map(int, input().split())
-    graph[u].append(v)
-    graph[v].append(u)
-
-
-
-def bfs(graph, start,visited):
+def bfs(start):
     queue = deque([start])
-    visited.add(start)
-    
+    visited[start] = True
     while queue:
         v = queue.popleft()
         for nei in graph[v]:
-            if nei not in visited:
-                visited.add(nei)
+            if not visited[nei]:
+                visited[nei] = True
                 queue.append(nei)
 
+for _ in range(m):
+    u,v = map(int, input().split())
+    graph[u].append(v)
+    graph[v].append(u)
 
-visited = set()
-count = 0
+count =0
+for i in range(1, n+1):
+    if not visited[i]:
+        bfs(i)
+        count+=1
 
-for node in range(1 , N+1):
-    if node not in visited:
-        bfs(graph, node, visited)
-        count +=1
 print(count)
+
