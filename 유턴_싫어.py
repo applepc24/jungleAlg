@@ -1,15 +1,15 @@
-R, C =  map(int, input().split())
-G = [list(input().strip()) for _ in range(R)]
+R, C = map(int, input().split())
+map = [list(input().strip()) for _ in range(R)]
 
-dirs = [(-1,0), (1,0), (0,-1),(0,1)]
+dirs = [(-1,0), (1,0), (0,-1), (0,1)]
 
 def is_road(r, c):
-    return 0 <= r < R and 0 <= c < C and G[r][c] == '.'
+    return 0 <= r < R and 0 <= c < C and map[r][c] == '.'
 
-dead_end = False
+end = False
 for r in range(R):
     for c in range(C):
-        if G[r][c] != '.':
+        if map[r][c] != '.':
             continue
         deg = 0
         for dr, dc in dirs:
@@ -17,8 +17,10 @@ for r in range(R):
             if is_road(nr, nc):
                 deg += 1
         if deg <= 1:
-            dead_end = True
-    if dead_end:
+            end = True
+    if end:
         break
+print(1 if end else 0)
+     
 
-print(1 if dead_end else 0)
+        

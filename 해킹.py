@@ -1,30 +1,46 @@
-import heapq
 import sys
-
+import heapq
+from collections import deque
 input = sys.stdin.readline
 
-T = int(input())
-for _ in range(T):
-    n, d, c = map(int, input().split())
-    graph = [[] for _ in range(n + 1)]
+INF = 10**9
+N,M,X,Y = map(int, input().split())
+A = list(map(int, input().split()))
 
-    for _ in range(d):
-        a,b,s = map(int, input().split())
-        graph[b].append((a, s))
-    
-    INF = float('inf')
-    dist = [INF] * (n+1)
-    dist[c] = 0
+graph = [[] for _ in range(N)]
+for _ in range(M):
+    s, e = map(int, input().split())
+    graph[s-1].append(e-1)
+    graph[e-1].append(s-1)
 
-    heap = [(0, c)]
-    while heap:저ㅏ 저ㅏ
-        time, node = heapq.heappop(heap)
-        if dist[node] < time:
-            continue
-        for next_node, cost in graph[node]:
-            if dist[next_node] > time + cost:
-                dist[next_node] = time + cost
-                heapq.heappush(heap, (dist[next_node], next_node))
-    count =  sum(1 for t in dist if t != INF)
-    max_time = max([t for t in dist if t != INF])
-    print(count, max_time)
+B = list(map(int, input().split()))
+
+security_time = [INF] * N
+q = deque()
+
+for b in B:
+    security_time[b-1] = 1
+    q.append(b-1)
+while q:
+    cur = q.popleft()
+    for nxt in graph[cur]:
+        if security_time[nxt] == INF:
+            security_time[nxt] = security_time[cur] + 2
+            q.append(nxt)
+for i in range(N):
+    if security_time[i] == INF and A[i] > 0:
+        print(-1)
+        sys.exit(0)
+
+profits = []
+for i in range(N):
+    T = security_time[i]
+    # 보안 시각 T 보다 작은 {2,4,6,...} 의 개수 = (T-1)//2
+    earn_times = 0 if T == INF else (T - 1) // 2
+    if earn_times > 0:
+        profits.append(A[i] * earn_times)
+
+
+profits.sort(reverse = True)
+answer = sum(profits[:X])
+print(answer)
