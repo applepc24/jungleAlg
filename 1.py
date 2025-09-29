@@ -1,7 +1,8 @@
 import sys
 
+T = sys.stdin.readlines()
 
-for line in sys.stdin:
+for line in T:
     n = line.strip()
     if not n:
         continue
