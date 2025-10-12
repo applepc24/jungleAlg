@@ -6,7 +6,7 @@ X = list(map(int, input().split()))
 
 X.sort()
 
-teams = 0
+team = 0
 cnt = 0
 need = None
 
@@ -15,8 +15,9 @@ for x in X:
         need = x
     cnt += 1
     if need == cnt:
-        teams += 1
+        team += 1
         cnt = 0
 if cnt > 0:
-    teams+=1
-print(teams)
+    team += 1
+print(team)
+
