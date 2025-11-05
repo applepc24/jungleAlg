@@ -1,21 +1,28 @@
 import sys
-input = sys.stdin.readline
+n = int(input())
+w = list(map(int, input().split()))
 
-k = int(input())
-g = list(map(int, input().split()))
-S = sum(g)
+L = w[0]
+R = w[1]
 
-reachable = bytearray(S + 1)
+for x in w[2:]:
+    if L == R:
+        L += x
+    elif L < R:
+        L += x
+    else:
+        R += x
 
-def dfs(i, cur):
-    if i == k:
-        reachable[abs(cur)] = 1
-        return
-    
-    dfs(i + 1, cur -g[i])
-    dfs(i + 1, cur)
-    dfs(i + 1, cur + g[i])
+diff  = abs(L - R)
 
-dfs(0, 0)
-
-print(S - sum(reachable[1:]))
+if diff == 0:
+    print(0)
+else:
+    denoms = [100, 50, 20, 10, 5, 2 , 1]
+    cnt = 0
+    for d in denoms:
+        cnt += diff // d
+        diff %= d
+        if diff == 0:
+            break
+    print(cnt)
