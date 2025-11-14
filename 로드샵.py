@@ -13,4 +13,3 @@ def combi_count(n:int, m: int, r: int) -> int:
     return combi(n, count_m)
 
 print(combi_count(n,m,r))
-
