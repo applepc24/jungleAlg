@@ -1,0 +1,15 @@
+import sys
+input = sys.stdin.readline
+
+n, m = map(int, input().split())
+arr = [0]*m
+
+def dfs(depth):
+    if depth == m:
+        print(*arr)
+        return
+    for x in range(1, n+1):
+        arr[depth] = x
+        dfs(depth + 1)
+
+dfs(0)
