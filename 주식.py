@@ -4,16 +4,16 @@ input = sys.stdin.readline
 T = int(input())
 
 for _ in range(T):
-    N = int(input())
-    num = list(map(int, input().split()))
+    n = int(input())
+    arr = list(map(int, input().split()))
 
-    best_cost = 0
+    best_num = 0
     ans = 0
-    for i in reversed(num):
-        if i > best_cost:
-            best_cost = i
+    
+    arr = arr[::-1]
+    for num in arr:
+        if best_num <= num:
+            best_num = num
         else:
-           ans += (best_cost - i)
-    print(ans) 
-
-        
+            ans += (best_num - num)
+    print(ans)
