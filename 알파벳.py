@@ -1,32 +1,37 @@
 import sys
+sys.setrecursionlimit(10**7)
 input = sys.stdin.readline
 
-R, C = map(int, input().split())
-grid = [list(input().strip()) for _ in range(R)]
+r, c = map(int, input().split())
+board = [input().strip() for _ in range(r)]
 
-answer = 0
-dirs = [(1,0), (-1, 0), (0,-1), (0,1)]
+dirs = [(1,0), (0,1), (-1,0), (0,-1)]
+ans = 0
 
-def dfs(r, c, mask, length):
-    global answer
-    if length > answer:
-        answer = length
-    
-    for dr, dc in dirs:
-        nr, nc = r + dr, c + dc
-        if not(0 <= nr < R and 0<= nc < C):
-            continue
-        
-        ch = grid[nr][nc]
-        bit = ord(ch) - ord('A')
+seen = [[set() for _ in range(c)] for _ in range(r)]
 
-        if (mask & (1 << bit)) != 0:
-            continue
-        
-        dfs(nr, nc, mask | (1 << bit), length + 1)
+def dfs(x,y,mask,depth):
+    global ans
+    if depth > ans:
+        ans = depth
 
-start_ch = grid[0][0]
-start_bit = ord(start_ch) - ord("A")
-start_mask = (1 << start_bit)
-dfs(0, 0, start_mask, 1)
-print(answer)
+    for dx, dy in dirs:
+        nx, ny = x+dx, y+dy
+        if 0 <= nx < r and 0 <= ny < c:
+            ch = ord(board[nx][ny]) - ord('A')
+            bit = 1 << ch
+            if mask & bit:
+                continue
+            
+            nmask = mask | bit
+
+            if nmask in seen[nx][ny]:
+                continue
+            seen[nx][ny].add(nmask)
+
+            dfs(nx,ny,nmask,depth+1)
+
+start_mask = 1 << (ord(board[0][0]) - ord('A'))
+seen[0][0].add(start_mask)
+dfs(0,0,start_mask, 1)
+print(ans)
