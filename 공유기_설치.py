@@ -1,37 +1,28 @@
 import sys
 input = sys.stdin.readline
 
-N , C = map(int, input().split())
-
-houses = []
-for _ in range(N):
-    houses.append(int(input()))
-
+N, C = map(int, input().split())
+houses = [int(input()) for _ in range(N)]
 houses.sort()
 
-low = 1
-high = houses[-1] -houses[0]
-result = 0
+def can_place(dist: int) -> bool:
+    cnt = 1
+    last = houses[0]
 
-def install(distance):
-    count = 1
-    start = houses[0]
+    for x in houses[1:]:
+        if x - last >= dist:
+            cnt += 1
+            last = x
+    return cnt >= C
 
-    for i in range(1, N):
-        if houses[i] - start >= distance:
-            count += 1
-            start = houses[i]
-    return (count >= C)
+lo, hi = 1, houses[-1] - houses[0]
+ans = 0
 
-while low <= high:
-    mid = (low + high) // 2
-    if install(mid):
-        result = mid
-        low = mid + 1
+while lo <= hi:
+    mid = (lo + hi) // 2
+    if can_place(mid):
+        ans = mid
+        lo = mid + 1
     else:
-        high = mid - 1
-
-print(result)
-
-
-
+        hi = mid - 1
+print(ans)
