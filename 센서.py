@@ -1,17 +1,21 @@
-n = int(input())
-k = int(input())
+import sys
+input = sys.stdin.readline
 
-if k >= n:
+N = int(input())
+K = int(input())
+pos = list(map(int, input().split()))
+
+pos.sort()
+
+if K >= N:
     print(0)
-    exit()
+    sys.exit(0)
 
-positions = list(map(int, input().split()))
-positions.sort()
+gaps = []
+for i in range(1, N):
+    gaps.append(pos[i] - pos[i-1])
 
-diff = []
-for i in range(n-1):
-    diff.append(positions[i+1]-positions[i])
+gaps.sort(reverse=True)
+answer = sum(gaps) - sum(gaps[:K-1])
 
-diff.sort()
-
-print(sum(diff))
+print(answer)
