@@ -1,24 +1,15 @@
 import sys
 input = sys.stdin.readline
-T = int(input())
 
-for _ in range(T):
-    parts = input().split()
-    test_id = int(parts[0])
-    arr = list(map(int, parts[1:]))
+N = int(input())
+arr = [int(input()) for _ in range(N)]
 
-    line = []
-    cnt = 0
+dp = [1] * N
 
-    for x in arr:
-        i = 0
-        while i < len(line) and line[i] < x:
-            i += 1
-        
-        cnt += len(line) - i
-        line.insert(i, x)
-    
-    print(test_id, cnt)
+for i in range(N):
+    for j in range(i):
+        if arr[j] < arr[i]:
+            dp[i] = max(dp[i], dp[j] + 1)
 
-    
-
+lis = max(dp)
+print(N - lis)
