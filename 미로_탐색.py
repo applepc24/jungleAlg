@@ -1,31 +1,22 @@
 import sys
 from collections import deque
 input = sys.stdin.readline
+N, M = map(int, input().split())
+board = [list(map(int, input().strip())) for _ in range(N)]
 
-n, m = map(int, input().split())
-maps = [list(map(int, input().strip())) for _ in range(n)]
+dirs = [(1,0), (-1,0), (0,1), (0,-1)]
 
-dx = [-1,1,0,0]
-dy = [0,0,-1,1]
+q = deque([(0,0)])
 
-def bfs(x, y):
-    queue = deque()
-    queue.append((x,y))
+while q:
+    x, y = q.popleft()
 
-    while queue:
-        x, y = queue.popleft()
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-        
-            if nx < 0 or ny < 0 or nx >= n or ny >= m:
-                continue
-            if maps[nx][ny] == 0:
-                continue
+    for dx, dy in dirs:
+        nx, ny = x + dx, y + dy
 
-            if maps[nx][ny] == 1:
-                maps[nx][ny] = maps[x][y] + 1
-                queue.append((nx, ny))
-    return maps[n-1][m-1]
+        if 0 <= nx < N and 0 <= ny < M:
+            if board[nx][ny] == 1:
+                board[nx][ny] = board[x][y] + 1
+                q.append((nx, ny))
 
-print(bfs(0,0))
+print(board[N-1][M-1])
