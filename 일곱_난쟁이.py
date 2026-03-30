@@ -1,16 +1,17 @@
-from itertools import combinations
+import sys
+input = sys.stdin.readline
+arr = [int(input()) for _ in range(9)]
+total = sum(arr)
 
-arr = []
-for _ in range(9):
-    arr.append(int(input()))
+for i in range(9):
+    for j in range(i+1, 9):
+        if total - arr[i] - arr[j] == 100:
+            result = []
+            for k in range(9):
+                if k != i and k != j:
+                    result.append(arr[k])
+            result.sort()
 
-for comb in combinations(arr, 7):
-    if sum(comb) == 100:
-        result = sorted(comb)
-        
-for num in result:
-        print(num)
-
-
-
-
+            for x in result:
+                print(x)
+            exit()
