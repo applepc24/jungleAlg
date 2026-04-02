@@ -1,44 +1,52 @@
+import sys
 from collections import deque
+input = sys.stdin.readline
 
-n = int(input())
-graph = [list(input().strip()) for _ in range(n)]
+N = int(input())
 
-visited_normal = [[False] * n for _ in range(n)]
-visited_weak = [[False] * n  for _ in range(n)]
+grid = [list(input().strip()) for _ in range(N)]
+dirs = [(1,0), (-1,0), (0,1), (0, -1)]
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+def bfs(sx, sy, visited, blind):
+    q = deque([(sx, sy)])
+    visited[sx][sy] = True
+    color = grid[sx][sy]
 
-def bfs(x,y, visited, board):
-    queue = deque()
-    queue.append((x,y))
-    visited[x][y] = True
-    color = board[x][y]
+    while q:
+        x, y = q.popleft()
+        for dx, dy in dirs:
+            nx, ny = x + dx, y + dy
 
-    while queue:
-        x, y = queue.popleft()
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            if 0 <= nx < n and 0 <= ny < n:
-                if not visited[nx][ny] and board[nx][ny] == color:
-                    visited[nx][ny] = True
-                    queue.append((nx, ny))
+            if 0 <= nx < N and 0 <= ny < N:
+                if not visited[nx][ny]:
+                    if not blind:
+                        if grid[nx][ny] == color:
+                            visited[nx][ny] = True
+                            q.append((nx, ny))
+                    else:
+                        if color == 'B':
+                            if grid[nx][ny] == color:
+                                visited[nx][ny] = True
+                                q.append((nx,ny))
+                        else:
+                            if grid[nx][ny] == 'G' or grid[nx][ny] == 'R':
+                                visited[nx][ny] = True
+                                q.append((nx,ny))
 
-normal_count = 0
-for i in range(n):
-    for j in range(n):
-        if not visited_noraml[i][j]:
-            bfs(i, j, visited_noraml, graph)
-            normal_count += 1
+normal = 0
+blind = 0
 
-weak_graph = [['R' if c == 'G' else c for c in row] for row in graph]
+visited_n = [[False] * N for _ in range(N)]
+visited_g = [[False] * N for _ in range(N)]
 
-weak_count = 0
-for i in range(n):
-    for j in range(n):
-        if not visited_weak[i][j]:
-            bfs(i,j,visited_weak, weak_graph)
-            weak_count += 1
+for i in range(N):
+    for j in range(N):
+        if not visited_n[i][j]:
+            bfs(i, j, visited_n, False)
+            normal += 1
+        if not visited_g[i][j]:
+            bfs(i, j, visited_g, True)
+            blind += 1
 
-print(normal_count, weak_count)
+print(normal, blind)
+            
