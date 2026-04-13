@@ -1,64 +1,58 @@
 import sys
 from collections import deque
 input = sys.stdin.readline
-T = int(input())
 
-dirs = ([(1,0), (-1,0), (0,1), (0,-1)])
+R, C = map(int, input().split())
+board = [list(input().strip()) for _ in range(R)]
 
-def fire_bfs(fire_q, board, fire_visited, w, h):
-    while fire_q:
-        x, y = fire_q.popleft()
-        for dx, dy in dirs:
-            nx, ny = x + dx, y + dy
+dirs = [(1,0), (-1,0), (0,1), (0,-1)]
 
-            if 0 <= nx < w and 0 <= ny < h:
-                if board[ny][nx] != '#' and fire_visited[ny][nx] == -1:
-                    fire_visited[ny][nx] = fire_visited[y][x] + 1
-                    fire_q.append((nx,ny))
+fire_dist = [[-1] * C for _ in range(R)]
+jihun_dist = [[-1] * C for _ in range(R)]
 
-def sg_bfs(sg_q, board, sg_visited, fire_visited,w, h):
-    while sg_q:
-        x, y = sg_q.popleft()
-        for dx, dy in dirs:
-            nx, ny = x + dx, y + dy
-            next_time = sg_visited[y][x] + 1
+fire_q = deque()
+jihun_q = deque()
 
-            if not (0 <= nx < w and 0 <= ny < h):
-                return next_time
-            
-            if board[ny][nx] == '#':
-                continue
+for i in range(R):
+    for j in range(C):
+        if board[i][j] == 'F':
+            fire_q.append((i,j))
+            fire_dist[i][j] = 0
+        if board[i][j] == 'J':
+            jihun_q.append((i,j))
+            jihun_dist[i][j] = 0
 
-            if sg_visited[ny][nx] != -1:
-                continue
-            
-            if fire_visited[ny][nx] != -1 and fire_visited[ny][nx] <= next_time:
-                continue
-
-            sg_visited[ny][nx] = next_time
-            sg_q.append((nx, ny))
-    return "IMPOSSIBLE"
-
-
-for _ in range(T):
-    w, h = map(int, input().split())
+while fire_q:
+    x, y = fire_q.popleft()
     
-    board = [list(input().strip()) for _ in range(h)]
-    fire_visited = [[-1] * w for _ in range(h)]
-    sg_visited = [[-1] * w for _ in range(h)]
+    for dx, dy in dirs:
+        nx, ny = x+dx, y+dy
 
-    fire_q = deque()
-    sg_q = deque()
+        if 0 <= nx < R and 0 <= ny < C:
+            if board[nx][ny] != '#' and fire_dist[nx][ny] == -1:
+                fire_dist[nx][ny] = fire_dist[x][y] + 1
+                fire_q.append((nx, ny))
 
-    for y in range(h):
-        for x in range(w):
-            if board[y][x] == '*':
-                fire_q.append((x,y))
-                fire_visited[y][x] = 0
-            if board[y][x] == '@':
-                sg_q.append((x,y))
-                sg_visited[y][x] = 0
-    fire_bfs(fire_q, board, fire_visited, w, h)
+while jihun_q:
+    x, y = jihun_q.popleft()
 
-    ans = sg_bfs(sg_q, board, sg_visited, fire_visited,w, h)
-    print(ans)
+    for dx, dy in dirs:
+        nx, ny = x+dx, y+dy
+        next_time = jihun_dist[x][y] + 1
+
+        if not (0 <= nx < R and 0 <= ny < C):
+            print(next_time)
+            sys.exit(0)
+        
+        if board[nx][ny] == '#':
+            continue
+
+        if jihun_dist[nx][ny] != -1:
+            continue
+
+        if fire_dist[nx][ny] != -1 and fire_dist[nx][ny] <= next_time:
+            continue
+
+        jihun_dist[nx][ny] = next_time
+        jihun_q.append((nx, ny))
+print('IMPOSSIBLE')
